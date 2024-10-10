@@ -15,6 +15,25 @@ module Api
       render json: response.to_json
     end
 
+    def all
+      golfer_id = params[:id]
+
+      if golfer_id.nil?
+        return render json: {
+          errors: ['Missing id parameter']
+        }, status: :bad_request
+      end
+
+      scores = Score.where(id: golfer_id).order(played_at: :desc).includes(:user)
+      serialized_scores = scores.map(&:serialize)
+
+      response = {
+        scores: serialized_scores
+      }
+
+      render json: response.to_json
+    end
+
     def create
       score = current_user.scores.build(score_params)
 
