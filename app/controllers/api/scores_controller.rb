@@ -24,7 +24,7 @@ module Api
         }, status: :bad_request
       end
 
-      scores = Score.where(id: golfer_id).order(played_at: :desc).includes(:user)
+      scores = Score.where(user_id: golfer_id).order(played_at: :desc).includes(:user)
       serialized_scores = scores.map(&:serialize)
 
       response = {
