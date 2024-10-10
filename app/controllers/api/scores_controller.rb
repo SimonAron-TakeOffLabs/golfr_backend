@@ -17,13 +17,6 @@ module Api
 
     def all
       golfer_id = params[:id]
-
-      if golfer_id.nil?
-        return render json: {
-          errors: ['Missing id parameter']
-        }, status: :bad_request
-      end
-
       scores = Score.where(user_id: golfer_id).order(played_at: :desc).limit(25).includes(:user)
       serialized_scores = scores.map(&:serialize)
 
