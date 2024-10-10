@@ -31,10 +31,12 @@ describe Api::ScoresController, type: :request do
       rng = Random.new
       now = Time.zone.today
       30.times do |i|
-        create(:score, user: @user1, total_score: rng.rand(66..99), played_at: now - 30.days + i.days)
+        create(:score,  user: @user1,
+                        total_score: rng.rand(66..99),
+                        played_at: now - 30.days + i.days)
       end
       get api_feed_path
-      
+
       expect(response).to have_http_status(:ok)
       response_hash = JSON.parse(response.body)
       scores = response_hash['scores']
